@@ -1,0 +1,37 @@
+<!doctype html>
+<html lang="fa" dir="rtl">
+<head>
+<meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><meta name="theme-color" content="#f6f2ea">
+<title>مدیریت کافه | کافه آرامش</title>
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin><link href="https://fonts.googleapis.com/css2?family=Vazirmatn:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="./role.css">
+</head>
+<body>
+<header class="role-top"><a class="role-brand" href="./index.html"><span class="role-mark">آ</span><span><strong>کافه آرامش</strong><small>مدیریت کافه</small></span></a><div class="role-top-actions"><a href="./index.html">نمای منوی مشتری</a><button id="logout" class="role-quiet" hidden>خروج</button></div></header>
+<main class="role-wrap">
+<section id="login-view" class="role-card role-login">
+<div class="role-eyebrow">ویژه صاحب کافه</div><h1>مدیریت آرام و دقیق کافه.</h1><p>برای مدیریت منو، ترکیب‌ها، تنظیمات و گزارش‌های واقعی وارد حساب مدیر شوید.</p>
+<form id="login-form" class="role-main">
+<div class="role-field"><label for="email">ایمیل</label><input id="email" type="email" autocomplete="username" required dir="ltr" placeholder="owner@aramesh.local"></div>
+<div class="role-field"><label for="password">گذرواژه</label><input id="password" type="password" autocomplete="current-password" required dir="ltr"></div>
+<button class="role-button" type="submit">ورود به مدیریت کافه</button><div id="login-error" class="role-error" hidden></div>
+</form><p class="role-muted">حساب‌های نمایشی فقط برای توسعه محلی هستند؛ آن‌ها را در محیط عملیاتی استفاده نکنید.</p>
+</section>
+<section id="merchant-view" hidden>
+<div class="role-page-heading"><div><div class="role-eyebrow">کافه آرامش · فضای مدیریت</div><h1>مدیریت کافه</h1><p id="merchant-greeting">منو، پیشنهادها و گزارش عملکرد</p></div><span class="role-status ok" id="api-status">اتصال برقرار شد</span></div>
+<div class="role-layout">
+<aside class="role-side"><h2>بخش‌های مدیریت</h2><nav class="role-nav" aria-label="بخش‌های مدیریت">
+<button type="button" class="active" data-page="overview">گزارش عملکرد</button>
+<button type="button" data-page="products">مدیریت منو</button>
+<button type="button" data-page="categories">دسته‌بندی‌ها</button>
+<button type="button" data-page="combos">ترکیب‌های پیشنهادی</button>
+<button type="button" data-page="settings">تنظیمات کافه</button>
+<button type="button" data-page="insights">پیشنهادهای داده‌محور</button>
+</nav></aside>
+<section class="role-main"><div class="role-card"><div class="role-page-heading" style="margin-bottom:15px"><div><h2 id="page-title">گزارش عملکرد</h2><p id="page-subtitle">آمار از سفارش‌های تکمیل‌شده محاسبه می‌شود.</p></div><button id="refresh-page" class="role-quiet">تازه‌سازی ↻</button></div><div id="page-content" aria-live="polite"><div class="role-empty">در حال بارگذاری…</div></div></div></section>
+</div>
+</section>
+</main>
+<footer class="role-footer">کافه آرامش · داده‌های گزارش از درخواست‌های ثبت‌شده در سامانه استخراج می‌شوند.</footer>
+<script src="./config.js"></script><script src="./role-client.js"></script><script src="./merchant.js"></script>
+</body></html>
