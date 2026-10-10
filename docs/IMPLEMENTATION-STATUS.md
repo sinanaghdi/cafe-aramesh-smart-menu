@@ -24,3 +24,11 @@
 - Production readiness still requires service-specific deployment configuration, HTTPS, monitoring, backups, managed database operations, rate limiting and security review.
 - The GitHub Pages site can display the frontend only. Real ordering and authenticated panels require a deployed API and database configured in `config.js`.
 - Full browser screenshot QA is not automatically asserted by the test suite.
+
+
+## UI fix — cart drawer
+
+- The cart drawer is marked hidden, inert, and aria-hidden at initial render.
+- CSS applies an explicit important hidden-state rule so the overlay display style cannot make the drawer visible when hidden.
+- Opening and closing synchronize the drawer's hidden/inert/ARIA state, the cart trigger's aria-expanded value, body scroll lock, and keyboard focus.
+- A frontend contract test guards the initial hidden state and the open/close behavior.
