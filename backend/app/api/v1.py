@@ -18,6 +18,7 @@ from app.models import (
     Product, ProductTag, User,
 )
 from app.schemas import (
+    ProductTagOut,
     AuthUserOut, ConfirmCodeRequest, CreateOrderRequest, LoginRequest, MenuCategoryOut,
     MenuProductOut, MenuResponse, OrderCreatedOut, OrderItemCustomerOut, OrderStatusOut,
     RefreshRequest, StaffOrderItemOut, StaffOrderOut, TokenPairOut, UpdateOrderStatusRequest,
@@ -222,14 +223,14 @@ def menu(
         Product.cafe_id == cafe.id,
     ).order_by(Product.is_featured.desc(), Product.id)).all()
     product_ids = [product.id for product in products]
-    tags_by_product: dict[int, list[dict[str, str]]] = {product_id: [] for product_id in product_ids}
+    tags_by_product: dict[int, list[ProductTagOut]] = {product_id: [] for product_id in product_ids}
     if product_ids:
         tags = db.scalars(select(ProductTag).where(
             ProductTag.cafe_id == cafe.id,
             ProductTag.product_id.in_(product_ids),
         )).all()
         for tag in tags:
-            tags_by_product[tag.product_id].append({"key": tag.tag_key, "value": tag.tag_value})
+            tags_by_product[tag.product_id].append(ProductTagOut(key=tag.tag_key, value=tag.tag_value))
     category_names = {category.id: category.name for category in categories}
     return MenuResponse(
         cafe_name=cafe.name,
