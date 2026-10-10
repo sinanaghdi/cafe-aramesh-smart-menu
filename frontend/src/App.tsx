@@ -31,7 +31,9 @@ export default function App() {
     <main className="page-shell" dir="rtl">
       <header className="topbar">
         <a className="brand" href="/" aria-label="کافه آرامش، صفحه اصلی">
-          <span className="brand-mark" aria-hidden="true">آ</span>
+          <span className="brand-mark" aria-hidden="true">
+            آ
+          </span>
           <span>
             <strong>کافه آرامش</strong>
             <small>منوی هوشمند</small>
@@ -43,7 +45,11 @@ export default function App() {
       <section className="hero" aria-labelledby="hero-title">
         <div className="hero-copy">
           <p className="eyebrow">یک مکث برای خودت</p>
-          <h1 id="hero-title">طعم خوب،<br /><em>انتخابِ تو.</em></h1>
+          <h1 id="hero-title">
+            طعم خوب،
+            <br />
+            <em>انتخابِ تو.</em>
+          </h1>
           <p className="hero-description">
             اینجا نقطه شروع منوی هوشمند کافه آرامش است؛ منویی فارسی، ساده و
             مشتری‌محور که برای انتخاب بهتر طراحی می‌شود.
@@ -56,7 +62,9 @@ export default function App() {
 
         <aside className="hero-card" aria-label="وضعیت نسخه">
           <span className="card-kicker">نسخه توسعه</span>
-          <div className="cup-mark" aria-hidden="true">◒</div>
+          <div className="cup-mark" aria-hidden="true">
+            ◒
+          </div>
           <h2>یک تجربه آرام‌تر</h2>
           <p>
             منو، پیشنهادهای مرتبط و تأیید حضوری سفارش در فازهای بعدی به این
