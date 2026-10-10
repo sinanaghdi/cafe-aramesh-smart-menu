@@ -367,8 +367,9 @@ def seed_data(db: Session) -> None:
 def init_db() -> None:
     if APP_ENV != "production" or os.getenv("AUTO_CREATE_SCHEMA", "false").lower() == "true":
         Base.metadata.create_all(bind=engine)
-    with SessionLocal() as db:
-        seed_data(db)
+    if APP_ENV != "production":
+        with SessionLocal() as db:
+            seed_data(db)
 
 
 @asynccontextmanager
