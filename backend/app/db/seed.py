@@ -92,7 +92,6 @@ def seed() -> None:
                 if product is None:
                     product = Product(cafe_id=cafe.id, slug=slug, name=name)
                     session.add(product)
-                    session.flush()
                 product.category_id = category_map[category_slug].id
                 product.name = name
                 product.description = description
