@@ -13,6 +13,7 @@ def test_cart_is_hidden_in_initial_markup_and_inert():
     assert overlay and re.search(r"\bhidden\b", overlay.group(1))
     assert re.search(r"\baria-hidden=\"true\"", overlay.group(1))
     assert re.search(r"\binert(?:\s|$)", overlay.group(1))
+    assert '<aside class="cart-drawer" role="dialog" aria-modal="true" aria-labelledby="cart-title">' in html
 
 
 def test_hidden_cart_cannot_be_overridden_by_overlay_display_style():
