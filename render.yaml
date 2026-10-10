@@ -1,0 +1,27 @@
+services:
+  - type: web
+    name: cafe-aramesh-api
+    runtime: python
+    plan: starter
+    buildCommand: pip install -r requirements.txt
+    startCommand: alembic upgrade head && uvicorn backend.app.main:app --host 0.0.0.0 --port $PORT
+    healthCheckPath: /api/health
+    envVars:
+      - key: APP_ENV
+        value: production
+      - key: CAFE_TIMEZONE
+        value: Asia/Tehran
+      - key: JWT_SECRET
+        generateValue: true
+      - key: DATABASE_URL
+        fromDatabase:
+          name: cafe-aramesh-db
+          property: connectionString
+      - key: CORS_ORIGINS
+        value: https://sinanaghdi.github.io
+
+databases:
+  - name: cafe-aramesh-db
+    plan: basic-256mb
+    databaseName: cafe_aramesh
+    user: cafe_aramesh
