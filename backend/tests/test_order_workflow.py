@@ -1,9 +1,9 @@
 from datetime import UTC, datetime, timedelta
 
+from fastapi.testclient import TestClient
 from sqlalchemy import select
 
-from app.models import AuthSession, Order, OrderCode
-from app.services.auth.passwords import verify_password
+from app.models import AuthSession, OrderCode
 
 
 def _login(client, email="staff@aramesh.local", password="StaffTestPass123!"):
@@ -157,7 +157,7 @@ def test_expired_code_expires_the_order(api_env):
 
 def test_staff_api_does_not_expose_sales_or_revenue(api_env):
     client, _, product_id, _ = api_env
-    order = _create_order(client, product_id)
+    _create_order(client, product_id)
     tokens = _login(client)
     response = client.get(
         "/v1/staff/orders",

@@ -22,7 +22,7 @@ from app.schemas import (
     MenuProductOut, MenuResponse, OrderCreatedOut, OrderItemCustomerOut, OrderStatusOut,
     RefreshRequest, StaffOrderItemOut, StaffOrderOut, TokenPairOut, UpdateOrderStatusRequest,
 )
-from app.services.auth.dependencies import get_current_user, require_staff
+from app.services.auth.dependencies import require_staff
 from app.services.auth.passwords import verify_password
 from app.services.auth.tokens import (
     create_access_token, create_refresh_session, decode_token, hash_token_id,
