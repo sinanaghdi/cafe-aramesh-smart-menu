@@ -1,45 +1,54 @@
-# API contract and implementation status
+# API contract — Phase 1 implemented
 
-This is a contract guide, not a claim that every endpoint is already implemented. Phase 0 implements only liveness and readiness. Implement planned endpoints only in their assigned phase and update this document in the same PR.
+All external URLs are proxied by Nginx with the `/api` prefix; FastAPI routes are mounted under `/v1`. The root GitHub Pages prototype is static only and does not call these routes.
 
-## Implemented in Phase 0
-| Method | Path | Purpose |
+## System
+| Method | Backend path | Purpose |
 |---|---|---|
-| GET | /health | Liveness probe; no downstream dependency check. |
-| GET | /ready | Readiness probe; checks PostgreSQL. |
+| GET | /health | Liveness, independent of PostgreSQL |
+| GET | /ready | Readiness; verifies PostgreSQL |
+| GET | /docs | Interactive API docs in local development |
 
-## Planned API by phase
+## Customer menu and requests
+| Method | Backend path | Purpose |
+|---|---|---|
+| GET | /v1/menu?table=5 | Categories, available/featured products, structured tags and table context |
+| POST | /v1/orders | Validate table, current product availability and prices; create a pending request; set anonymous HTTP-only session cookie |
+| GET | /v1/orders/{id} | Read status only for the customer session that created the request |
 
-### Customer — Phase 1
-- GET /api/v1/menu?table=... — published categories/products and verified table context.
-- GET /api/v1/products/{product_id} — product details and structured attributes.
-- POST /api/v1/orders — server validates menu prices and availability; creates a pending request only.
-- GET /api/v1/orders/{public_id} — customer-safe order status; never reveal a confirmation secret.
-- POST /api/v1/orders/{public_id}/verify — staff submits the customer's short code.
-- GET /api/v1/staff/orders — staff-scoped operational queue only.
-- PATCH /api/v1/staff/orders/{order_id}/status — legal state transitions only.
-- GET /api/v1/staff/events — SSE stream when implemented.
+POST /v1/orders expects a table number and 1–50 product/quantity lines. Prices and totals are computed from the database; client-supplied totals are ignored. The response contains the short confirmation code once. Only an HMAC digest is stored; the code expires after the configured duration and is single-use.
 
-### Study mode and loyalty — Phase 2
-- GET/PUT /api/v1/merchant/study-mode-rules
-- POST /api/v1/study-sessions and GET /api/v1/study-sessions/{session_id}
-- POST /api/v1/club/otp/request and POST /api/v1/club/otp/verify
-- GET /api/v1/club/account and POST /api/v1/club/account/delete
+## Staff authentication
+| Method | Backend path | Purpose |
+|---|---|---|
+| POST | /v1/auth/login | Password-hash verification; return short-lived access + refresh token |
+| POST | /v1/auth/refresh | Rotate refresh session; replay of a revoked token is rejected |
+| POST | /v1/auth/logout | Revoke the supplied refresh session |
+| GET | /v1/staff/orders | Staff-only operations queue with optional status filter |
+| GET | /v1/staff/events | Staff-only SSE snapshot stream |
+| POST | /v1/staff/orders/{id}/confirm | Check the customer's code, expiry, state, and attempt limits |
+| PATCH | /v1/staff/orders/{id}/status | Move confirmed/preparing orders forward or cancel with a reason |
 
-### NLP and combos — Phase 3
-- POST /api/v1/menu/search — ranked existing products with explanation or clarification.
-- GET /api/v1/menu/combos — approved, currently valid combos only.
-- Merchant-only draft/approve/reject combo endpoints.
-- GET /api/v1/merchant/nlp/unanswered — anonymized queries.
+Staff response schemas intentionally do not include total_amount, line prices, revenue, analytics, or merchant insights. Authorization and cafe scoping are checked at the API layer.
 
-### Merchant — Phase 4
-- Merchant-only category/product/combo/rule management.
-- GET /api/v1/merchant/analytics?from=...&to=... and GET /api/v1/merchant/analytics/export.csv
-- GET /api/v1/merchant/insights
-- POST /api/v1/merchant/insights/{id}/decision — explicit approve/reject.
+## Status machine
+- `draft → pending_confirmation → confirmed → preparing → served`
+- `draft` and `pending_confirmation` may be cancelled or expire.
+- `confirmed` and `preparing` may be cancelled; cancellation requires a reason.
+- `served`, `cancelled`, and `expired` are terminal.
+- Confirmation to `confirmed` can happen only through code verification.
 
-## Security invariants
-- Staff endpoints must not include revenue, sales KPI, insight, or analytics fields even in API schemas.
-- Server-calculated prices are authoritative; clients cannot set prices or discounts.
-- Unknown table context, cross-cafe IDs, expired/replayed codes, throttled attempts, and illegal transitions fail closed.
-- Use consistent error schemas and avoid returning secrets or personal data.
+## Development demo login
+The seed creates local-only demo accounts when ENVIRONMENT is not production:
+- Staff: `staff@aramesh.local` / `StaffDemo!2026`
+- Merchant: `merchant@aramesh.local` / `MerchantDemo!2026`
+
+Set environment variables to override credentials before local use. These are not production credentials. Production seed deliberately skips demo users.
+
+## Security notes
+- Anonymous customer identity is a random HTTP-only cookie; orders store a SHA-256 digest of the session token, not the raw cookie.
+- Confirmation codes are generated with Python's CSPRNG, HMACed with a secret, unique among active codes per cafe, expiring and single-use.
+- Failed code attempts are persisted per order and lock the code at the configured limit; endpoint-level throttling uses Redis with a bounded development-only in-process fallback.
+- JWT refresh tokens are tracked by hashed JTI and rotated/revoked in PostgreSQL.
+- All user/order/item reads are scoped by cafe, and customer status reads are scoped by session digest.
+- These endpoints do not take payment and do not turn a request into an accounting sale.

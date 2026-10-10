@@ -3,6 +3,7 @@ from fastapi.middleware.cors import CORSMiddleware
 from sqlalchemy import text
 from sqlalchemy.exc import SQLAlchemyError
 
+from app.api.v1 import router as v1_router
 from app.core.config import settings
 from app.db.session import SessionLocal
 
@@ -36,3 +37,6 @@ def readiness() -> dict[str, str]:
     except SQLAlchemyError as exc:
         raise HTTPException(status_code=503, detail="Database is not ready") from exc
     return {"status": "ready", "database": "ok"}
+
+
+app.include_router(v1_router)

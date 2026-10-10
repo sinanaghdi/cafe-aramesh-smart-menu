@@ -1,7 +1,9 @@
 from sqlalchemy import select
 
+from app.core.config import settings
 from app.db.session import SessionLocal
-from app.models import Cafe, CafeTable, Category, Product, ProductTag, StudyModeRule
+from app.models import Cafe, CafeTable, Category, Product, ProductTag, StudyModeRule, User
+from app.services.auth.passwords import hash_password
 
 CAFE_NAME = "کافه آرامش"
 CAFE_SLUG = "cafe-aramesh"
@@ -115,6 +117,39 @@ def seed() -> None:
                             tag_key=tag_key,
                             tag_value=tag_value,
                         ))
+
+            if settings.environment.lower() != "production":
+                demo_users = [
+                    (
+                        settings.demo_staff_email.strip().lower(),
+                        "گارسون نمونه",
+                        "staff",
+                        settings.demo_staff_password,
+                    ),
+                    (
+                        settings.demo_merchant_email.strip().lower(),
+                        "صاحب کافه نمونه",
+                        "merchant",
+                        settings.demo_merchant_password,
+                    ),
+                ]
+                for email, full_name, role, password in demo_users:
+                    if not email or not password:
+                        continue
+                    user = session.scalar(
+                        select(User).where(User.cafe_id == cafe.id, User.email == email)
+                    )
+                    if user is None:
+                        session.add(
+                            User(
+                                cafe_id=cafe.id,
+                                full_name=full_name,
+                                role=role,
+                                email=email,
+                                password_hash=hash_password(password),
+                                is_active=True,
+                            )
+                        )
 
             rule = session.scalar(select(StudyModeRule).where(StudyModeRule.cafe_id == cafe.id))
             if rule is None:

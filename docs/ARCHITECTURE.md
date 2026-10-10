@@ -51,3 +51,13 @@ Alembic owns schema evolution. The initial bootstrap migration creates the metad
 
 ## Existing root prototype
 The root-level `index.html`, `app.js`, and `styles.css` are a pre-existing static GitHub Pages prototype and intentionally remain unchanged. They do not connect to FastAPI, authenticate users, persist requests, or provide real analytics. The React/Vite scaffold under `frontend/` is what Docker serves on port 8080. Consolidating these into a single UI is a later, explicit UI migration task; do not silently remove the existing Pages demo.
+
+
+## Phase 1 implementation detail
+- Staff access uses Argon2 password hashes, short-lived access JWTs, and refresh tokens tracked by hashed JTI in `auth_sessions`; each refresh token is rotated and replay is rejected.
+- Customer identity is an anonymous random HTTP-only cookie. The database stores only its SHA-256 digest on orders.
+- Order totals and item price snapshots come from database values; clients cannot set a price or discount.
+- Confirmation codes use `secrets.randbelow` (CSPRNG), an HMAC digest, expiry, single use, per-order failed-attempt locking, and a partial unique index for active code hashes.
+- State transitions are centralized in an independently tested service. Code verification is the only route to `confirmed`.
+- Staff API responses omit money fields. The SSE event stream is authenticated, scoped to a cafe, and provides operational snapshots only.
+- Endpoint rate limiting uses Redis; local development falls back to in-process limits if Redis is unavailable. Production fails closed when Redis cannot enforce the limit.

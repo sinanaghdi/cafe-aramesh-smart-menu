@@ -4,14 +4,12 @@
 
 ## وضعیت فعلی
 
-این مخزن فعلاً دو مسیر رابط دارد که عمداً از هم جدا نگه داشته شده‌اند:
+مخزن دو رابط جدا دارد:
 
-- **پروتوتایپ استاتیک موجود در ریشه** — فایل‌های `index.html`، `app.js` و `styles.css` برای نمایش و بررسی سریع UI و انتشار از طریق GitHub Pages. این نسخه نمایشی است و به بک‌اند وصل نیست؛ سبد، پنل‌ها یا اعداد نمایشی سفارش واقعی یا فروش واقعی نیستند.
-- **زیرساخت Full-stack جدید** — پوشه‌های `frontend/` و `backend/`، پایگاه داده، مهاجرت و Docker Compose. این بخش اکنون فاز صفر را تکمیل کرده است؛ منوی زنده، احراز هویت و جریان سفارش واقعی هنوز پیاده‌سازی نشده‌اند.
+- **پروتوتایپ استاتیک ریشه:** فایل‌های `index.html`، `app.js` و `styles.css` برای مرور طرح و انتشار از طریق GitHub Pages. این نسخه نمایشی است و سفارش واقعی ثبت نمی‌کند.
+- **اپ Full-stack در `frontend/` و `backend/`:** فاز ۱ شامل منوی متصل به PostgreSQL، سبد با مبلغ محاسبه‌شده در سرور، کد کوتاه تأیید، ورود کارکنان، صف سفارش‌ها و گردش وضعیت را فراهم می‌کند. استادی‌مود، باشگاه مشتریان، NLP، کمبو و آنالیتیکس Merchant هنوز در فازهای بعد هستند.
 
-پیشرفت بر اساس فازبندی در [PLAN.md](PLAN.md) ثبت شده است. هیچ قابلیتی خارج از این وضعیت را عملیاتی فرض نکنید.
-
-## اجرای زیرساخت Full-stack
+## اجرای محلی
 
 پیش‌نیاز: Docker و Docker Compose.
 
@@ -19,16 +17,37 @@
 docker compose up --build
 ```
 
-پس از بالا آمدن سرویس‌ها:
-
-- رابط React داخل Docker: http://localhost:8080
+- رابط React: http://localhost:8080
 - سلامت API: http://localhost:8000/health
-- آمادگی API و اتصال PostgreSQL: http://localhost:8000/ready
+- آمادگی API و دیتابیس: http://localhost:8000/ready
 - مستندات API: http://localhost:8000/docs
 
-Compose سرویس‌های PostgreSQL و Redis را بالا می‌آورد، مهاجرت Alembic را اجرا می‌کند و ۲۵ محصول نمونه فارسی با تگ‌های ساختاریافته، ۵ دسته و ۸ میز آزمایشی را seed می‌کند. اولین build برای دریافت وابستگی‌ها به اینترنت نیاز دارد. مقادیر فایل `.env.example` فقط برای توسعه محلی هستند.
+در شروع، Compose مهاجرت‌های Alembic را اجرا می‌کند و ۲۵ محصول نمونه فارسی، تگ‌ها، دسته‌ها، میزهای آزمایشی و کاربران آزمایشی را seed می‌کند. اعداد و داده‌های نمونه واقعی نیستند.
 
-## بررسی‌ها و تست‌ها
+### ورود محلی پنل گارسون
+
+- ایمیل: `staff@aramesh.local`
+- گذرواژه: `StaffDemo!2026`
+
+حساب صاحب کافه برای فازهای بعدی:
+
+- ایمیل: `merchant@aramesh.local`
+- گذرواژه: `MerchantDemo!2026`
+
+این اطلاعات فقط برای توسعهٔ محلی‌اند. از آن‌ها در محیط عمومی یا عملیاتی استفاده نکنید؛ متغیرهای مربوطه را در `.env` تغییر دهید. seed در `ENVIRONMENT=production` کاربران نمونه ایجاد نمی‌کند و استقرار عملیاتی به کلیدهای قوی، HTTPS و `COOKIE_SECURE=true` نیاز دارد.
+
+## رفتار سفارش
+
+1. مشتری از QR میز وارد منو می‌شود: `?table=5`.
+2. محصولات را انتخاب و درخواست را ثبت می‌کند؛ قیمت هر آیتم از دیتابیس خوانده می‌شود.
+3. کد ۳ یا ۴ رقمی یک بار نشان داده می‌شود. سرور فقط HMAC کد را ذخیره می‌کند.
+4. گارسون کد مشتری را وارد می‌کند. کد منقضی، مصرف‌شده یا قفل‌شده پذیرفته نمی‌شود.
+5. پس از تأیید، وضعیت سفارش طبق state machine جلو می‌رود: تأیید شده، آماده‌سازی، تحویل.
+6. API پنل گارسون مبلغ، درآمد یا تحلیل فروش را برنمی‌گرداند.
+
+هیچ درگاه پرداختی وجود ندارد. ثبت درخواست معادل فروش نهایی یا حسابداری نیست.
+
+## تست‌ها
 
 در پوشه `backend/`:
 
@@ -49,20 +68,19 @@ npm run build
 npm run format:check
 ```
 
-CI همین بررسی‌ها را اجرا می‌کند و علاوه بر build، اجرای واقعی Compose، اتصال دیتابیس و وجود داده‌های seed را هم smoke-test می‌کند.
+CI علاوه بر lint و build، بالا آمدن واقعی Compose، اجرای migration، آمادگی API و وجود داده‌های seed را بررسی می‌کند.
 
-## مرزهای محصول
+## محدوده محصول
 
-- **Customer:** مشاهده منو بدون ثبت‌نام اجباری؛ عضویت باشگاه در آینده اختیاری است.
-- **Staff:** فقط عملیات سفارش و تأیید حضوری؛ نباید به درآمد یا تحلیل فروش دسترسی داشته باشد.
-- **Merchant:** مدیریت منو و قوانین و مشاهده تحلیل مبتنی بر داده واقعی؛ تأیید انسانی برای پیشنهادهای AI الزامی است.
-- هیچ درگاه پرداخت، POS، انبار، حسابداری یا CRM کامل در MVP ساخته نمی‌شود.
-- درخواست ثبت‌شده معادل سفارش تأییدشده یا فروش نهایی نیست.
-- هوش مصنوعی اختیاری است؛ مسیر قاعده‌محور باید بدون سرویس خارجی کار کند.
+- **Customer:** منوی QR بدون ثبت‌نام اجباری.
+- **Staff:** عملیات سفارش و تأیید حضوری؛ بدون آمار فروش یا درآمد.
+- **Merchant:** مدیریت منو و قوانین و گزارش داده‌محور در فاز ۴.
+- پرداخت آنلاین، POS، انبار، حسابداری و CRM کامل خارج از محدوده‌اند.
+- قابلیت‌های AI اختیاری‌اند و تغییر تجاری را بدون تأیید صریح Merchant اعمال نمی‌کنند.
 
 ## مستندات
 
-- [PLAN.md](PLAN.md) — برنامه و معیارهای پذیرش فازها
+- [PLAN.md](PLAN.md)
 - [مشخصات محصول](docs/PRODUCT-SPEC.md)
 - [معماری](docs/ARCHITECTURE.md)
 - [قرارداد API و وضعیت پیاده‌سازی](docs/API.md)
@@ -71,24 +89,18 @@ CI همین بررسی‌ها را اجرا می‌کند و علاوه بر bui
 - [نقشه راه](docs/ROADMAP.md)
 - [راهنمای مشارکت](CONTRIBUTING.md)
 
-## هشدار استقرار
-
-پیش از انتشار عملیاتی، کلیدها و رمزهای مدیریت‌شده، HTTPS، CORS محدود، احراز هویت و مجوزدهی سمت سرور، چرخش توکن‌های QR آزمایشی، پشتیبان‌گیری و سیاست نگهداری داده باید بررسی و پیکربندی شوند. هیچ رمز واقعی یا کلید API نباید در مخزن قرار بگیرد.
-
 ---
 
 ## English
 
-Café Aramesh Smart Menu is a Persian-first, RTL, mobile-first menu designed around deliberate in-person staff confirmation and merchant-approved recommendations.
+Café Aramesh Smart Menu is a Persian-first, RTL, mobile-first cafe menu built around deliberate in-person staff confirmation.
 
-The repository preserves the existing static GitHub Pages prototype at the root (`index.html`, `app.js`, `styles.css`) and adds a separate React/Vite + FastAPI stack under `frontend/` and `backend/`. The root prototype is presentation-only. The full-stack app is currently at Phase 0: migrations, seed data, health checks, and infrastructure are implemented, but live ordering, authentication, NLP, smart combos, Wi-Fi vouchers, and business analytics are not implemented yet.
+The existing root HTML/CSS/JavaScript prototype remains presentation-only for GitHub Pages. The full-stack app lives under `frontend/` and `backend/`. Phase 1 implements the database-backed menu, server-priced request cart, short-lived HMAC-backed confirmation code, staff login, operations-only order queue, SSE snapshots, and tested status transitions. Study mode, loyalty, Persian NLP, smart combos, and merchant analytics remain later phases.
 
-Run the local stack:
+Start locally with `docker compose up --build`. Visit the React app at http://localhost:8080, API health at http://localhost:8000/health, readiness at http://localhost:8000/ready, and API docs at http://localhost:8000/docs.
 
-```bash
-docker compose up --build
-```
+Development-only login:
+- Staff: `staff@aramesh.local` / `StaffDemo!2026`
+- Merchant: `merchant@aramesh.local` / `MerchantDemo!2026`
 
-Open the React app at http://localhost:8080, API health at http://localhost:8000/health, readiness at http://localhost:8000/ready, and API docs at http://localhost:8000/docs. Seed values are development fixtures, not real business data.
-
-This is not a POS, payment system, accounting package, inventory system, or full CRM. See PLAN.md and docs/ROADMAP.md for the phase gates.
+Do not use those credentials outside local development. The app is not a payment system, POS, accounting package, inventory system, or full CRM.
