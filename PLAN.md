@@ -15,7 +15,7 @@ Replace a static cafe menu with a Persian-first, mobile-first menu that helps cu
 - Styling: CSS design tokens in the scaffold; Persian RTL and mobile-first behavior are mandatory regardless of styling tool.
 - Realtime: SSE for the staff queue unless implementation findings justify otherwise.
 - Redis: optional for throttling/pub/sub; core domain correctness must not depend on it.
-- AI: rule-based behavior is always available. External providers are optional and never receive customer PII.
+- AI: rule-based behavior is always available. The AIProvider contract is defined independently; external providers are optional and must never receive customer PII.
 - Money: integer amounts; each cafe declares IRR (rial) or IRT (toman). Seed prices use toman.
 - Time: timezone-aware UTC timestamps in storage; Jalali formatting belongs in the UI.
 - Multi-tenancy: each cafe-owned domain table carries cafe_id, and server-side queries enforce cafe scoping.
@@ -23,12 +23,12 @@ Replace a static cafe menu with a Persian-first, mobile-first menu that helps cu
 ## Phased implementation
 ### Phase 0 — Foundation (current PR)
 - [x] Inspect the repository and create this plan before feature work.
-- [ ] Establish backend/frontend scaffolds and Docker Compose.
-- [ ] Add SQLAlchemy domain models, initial Alembic migration, and idempotent Persian seed data (20–30 products).
-- [ ] Add health/readiness endpoints and a smoke test.
-- [ ] Add CI, Dependabot, issue/PR templates, Makefile, environment example, and bilingual instructions.
-- [ ] Add architecture, API, AI, decisions, and forward roadmap documentation.
-- [ ] Open a PR; do not merge or start Phase 1 before review/approval.
+- [x] Establish backend/frontend scaffolds and Docker Compose.
+- [x] Add SQLAlchemy domain models, initial Alembic migration, and idempotent Persian seed data (25 products).
+- [x] Add health/readiness endpoints and a smoke test.
+- [x] Add CI, Dependabot, issue/PR templates, Makefile, environment example, and bilingual instructions.
+- [x] Add architecture, API, AI, decisions, and forward roadmap documentation.
+- [x] Open a PR; do not merge or start Phase 1 before review/approval.
 
 Acceptance: local Compose builds and starts web/API/PostgreSQL/Redis; API becomes healthy; migration and seed run; CI checks succeed; no real order flow or fake business analytics are claimed.
 
@@ -48,7 +48,7 @@ Add merchant-only menu/combo/rule management, date-range KPI calculations based 
 Complete authz/IDOR/abuse controls, structured logs, accessibility, constrained-mobile performance, Playwright E2E, deployment docs, and at least 70% coverage for domain logic (state machine, code handling, combo ranking, NLP).
 
 ## Future extensions — architecture only
-Online ordering, a general AI agent, and an AI support assistant are explicitly out of MVP scope. Keep extension points/interfaces and feature flags possible, but do not implement the features in these phases.
+Online ordering, a general AI agent, and an AI support assistant are explicitly out of MVP scope. Keep extension points/interfaces and disabled feature flags possible, but do not implement the features in these phases.
 
 ## Definition of done for the whole MVP
 - docker compose up --build starts and seeds the stack.
