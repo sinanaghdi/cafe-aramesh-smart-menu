@@ -567,9 +567,13 @@ def natural_search(query: str = Query(min_length=1, max_length=240), db: Session
         if checks and not all(ok for ok, _ in checks):
             continue
         text = normalize_fa(" ".join([p.name,p.subtitle,p.description," ".join(p.tags or [])]))
-        soft = sum(1 for term in raw.split() if len(term)>2 and term in text)
-        score = len(checks)*3+soft
-        if score:
+        stop_words = {"یه","یک","نوشیدنی","چیز","چیزی","خیلی","دنبال","پیشنهاد","بده","بده","خوام","می","میخوام","میخوام","می خوام","برای","من","تو","سلیقه","یه","و","با","رو","را","از","به","یه","لطفا"}
+        meaningful_terms = [term for term in raw.split() if len(term) > 2 and term not in stop_words]
+        soft = sum(1 for term in meaningful_terms if term in text)
+        # Generic request words must not create a false match on their own.
+        score = len(checks)*3 + soft
+        has_attribute_match = bool(checks) and all(ok for ok, _ in checks)
+        if (has_attribute_match and score > 0) or (not requested and soft > 0):
             results.append((score,p,[label for ok,label in checks if ok] or ["شباهت با عبارت جست‌وجو"]))
     results.sort(key=lambda x:(-x[0],x[1].price_toman,x[1].name))
     return {"query":query,"provider":"rule-based","supported_preferences":bool(requested),
