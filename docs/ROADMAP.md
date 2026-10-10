@@ -1,62 +1,32 @@
-# نقشه راه توسعه منوی هوشمند کافه آرامش
+# Café Aramesh Smart Menu — Roadmap
 
-## هدف محصول
-تبدیل منوی ثابت به تجربه‌ای فارسی، پویا و مشتری‌محور. محصول در MVP نرم‌افزار کامل مدیریت کافه، حسابداری، صندوق فروش یا CRM نیست.
+A phase is complete only after acceptance criteria and tests pass, a report is provided, and the owner approves moving on.
 
-## فاز ۱ — پایه پروژه و تجربه اولیه (شروع شده)
-- [x] ثبت ساختار اولیه مخزن و مستندات
-- [x] رابط اولیه فارسی با RTL و هویت بصری آرام
-- [x] نمایش محصولات نمونه و فیلتر دسته‌بندی
-- [x] جست‌وجوی ساده در فهرست نمونه
-- [x] پیش‌نمایش اولیه سبد و پنل‌ها با برچسب نمایشی
-- [ ] بررسی دسترس‌پذیری، اندازه‌های مختلف صفحه و آزمون مرورگر
-- [ ] تصمیم‌گیری و ثبت پشته نهایی فرانت‌اند و بک‌اند
+## Phase 0 — Foundation
+Plan and stack decisions, app scaffolds, Docker Compose, PostgreSQL schema/migration, Persian seed data, health checks, CI, contribution guidance, and architecture/API/AI documentation.
 
-## فاز ۲ — منوی واقعی و مدیریت محصولات
-- [ ] انتخاب معماری نهایی براساس نیاز استقرار
-- [ ] API و پایگاه داده برای دسته‌ها و محصولات
-- [ ] مدیریت محصول، قیمت، موجودی و ویژگی‌های طعمی
-- [ ] داده‌های بذر توسعه و اعتبارسنجی ورودی‌ها
-- [ ] انتقال UI از داده نمونه به API واقعی
+## Phase 1 — Customer menu and staff confirmation
+Real category/product API, QR table context, anonymous session, cart validation, short-lived verification code, state machine, staff-only operational queue, audit events, live updates. No payment.
 
-## فاز ۳ — سبد درخواست و پنل کارکنان
-- [ ] سبد سمت کاربر و محاسبه قیمت معتبر در سرور
-- [ ] اتصال میز با QR یا شناسه امن
-- [ ] ایجاد درخواست در انتظار تأیید
-- [ ] کد کوتاه امن، انقضا و محدودیت تلاش
-- [ ] پنل کارکنان برای مشاهده و تأیید حضوری
-- [ ] چرخه وضعیت سفارش و ثبت رویدادها
+## Phase 2 — Study/work mode and club
+Merchant-configurable study rules, mock Wi-Fi adapter and timed vouchers after staff confirmation, consent-based optional mobile club, mock OTP provider, points ledger, tiers/rewards, account deletion.
 
-## فاز ۴ — کمبو و جست‌وجوی زبان طبیعی
-- [ ] مدیریت کمبو توسط صاحب کافه
-- [ ] قوانین پیشنهاد محصولات محبوب و محصولات منتخب برای ترویج
-- [ ] تجزیه عبارت‌های فارسی و هم‌معنی‌ها
-- [ ] رتبه‌بندی فقط بر اساس محصولات واقعی و موجود
-- [ ] تست حالت‌های بدون نتیجه و املای متفاوت
+## Phase 3 — Smart combo and Persian NLP
+Testable combo scoring for BOOST_BESTSELLER and PUSH_SLOW_MOVER; deterministic Persian synonym/tag search; optional AI provider; clarification for ambiguous queries; anonymized unanswered-query signals; merchant approval before publication.
 
-## فاز ۵ — حالت مطالعه و باشگاه مشتریان
-- [ ] قوانین مدت و محصول واجد شرایط
-- [ ] فعال‌سازی جلسه فقط پس از تأیید معتبر
-- [ ] عضویت سبک و دفترکل امتیازها
-- [ ] جلوگیری از امتیاز یا بازخرید تکراری
+## Phase 4 — Merchant management and insights
+Menu/combo management, merchant-only analytics based on persisted data, Jalali period selection, CSV export, rule-based fallback insights, AI suggestions with evidence/confidence and explicit approve/reject.
 
-## فاز ۶ — پنل صاحب کافه و تحلیل
-- [ ] گزارش سفارش‌های تکمیل‌شده روزانه، هفتگی و ماهانه
-- [ ] مقایسه دوره‌های مشابه و مدیریت نبود داده
-- [ ] عملکرد محصولات و کمبوها بر اساس داده واقعی
-- [ ] پیشنهادهای قاعده‌محور با توضیح شواهد
-- [ ] امکان افزودن ارائه‌دهنده LLM اختیاری؛ بدون وابستگی MVP به API پولی
+## Phase 5 — Hardening and deployment readiness
+Security and authorization review, IDOR and abuse tests, accessible responsive UI, performance checks, Playwright critical-flow coverage, structured logs, deployment docs, and 70%+ domain logic coverage.
 
-## فاز ۷ — آماده‌سازی انتشار
-- [ ] تست‌های خودکار و تست مسیرهای اصلی
-- [ ] کنترل مجوزها و امنیت API
-- [ ] بررسی نهایی RTL و موبایل
-- [ ] تنظیم استقرار فرانت‌اند، بک‌اند و پایگاه داده
-- [ ] مستندات راه‌اندازی و چک‌لیست تولید
+## Future extensions — architecture only
+These are not MVP features and must not be implemented within the phases above:
+- Online ordering, if later validated by the business.
+- A general AI agent.
+- An AI customer-support assistant.
 
-## قواعد پذیرش
-- هیچ آمار نمونه‌ای نباید به‌عنوان فروش واقعی معرفی شود.
-- هیچ سفارش یا پرداخت واقعی بدون بک‌اند و فرایند تأیید ادعا نمی‌شود.
-- همه متن‌های محصول فارسی و چیدمان راست‌به‌چپ هستند.
-- گارسون فقط ابزار عملیات سفارش را می‌بیند؛ تحلیل‌ها متعلق به پنل صاحب کافه‌اند.
-- هر فاز باید با تست یا بررسی مستند تأیید شود.
+Keep possible extension points and feature flags documented; do not ship placeholder controls implying these features work.
+
+## Release gate
+The whole MVP is complete only when Compose starts and seeds the stack; customer-to-staff confirmation and eligible study vouchers work end to end; merchant analytics use persisted data; human approval is enforced; and CI/security/E2E checks are green.
