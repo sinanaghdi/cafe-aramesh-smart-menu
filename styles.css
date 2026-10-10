@@ -46,3 +46,12 @@
 .history-line strong{direction:ltr}
 @media(max-width:900px){.combo-grid{grid-template-columns:repeat(2,minmax(0,1fr))}}
 @media(max-width:640px){.combo-grid,.role-links{grid-template-columns:1fr}.combo-art-mini{height:95px}.role-links p{min-height:0}.club-dialog{padding:22px 18px}.combo-card{display:grid;grid-template-columns:95px minmax(0,1fr);gap:0 11px}.combo-art-mini{grid-row:span 4;height:100%;min-height:130px}.combo-card h3{margin-top:2px}.combo-card>p{min-height:0}.combo-products-mini{margin-bottom:7px}.combo-price-line{grid-column:2}}
+
+
+/* Safety net: the drawer must remain visually and interactively closed when hidden. */
+.overlay[hidden],
+#cart-overlay[hidden] {
+  display: none !important;
+  visibility: hidden !important;
+  pointer-events: none !important;
+}

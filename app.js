@@ -96,8 +96,24 @@ function renderCart(){
  $("cart-total").textContent=money(total);$("cart-items").innerHTML=lines||'<div class="cart-empty">سبد سفارش هنوز خالی است.<br>از منو چیزی برای خودت انتخاب کن.</div>';
  $("submit-order").disabled=!cart.size;
 }
-function openCart(){$("cart-overlay").hidden=false;document.body.style.overflow="hidden";$("close-cart").focus();}
-function closeCart(){$("cart-overlay").hidden=true;document.body.style.overflow="";}
+function openCart(){
+ const overlay=$("cart-overlay");
+ overlay.hidden=false;
+ overlay.inert=false;
+ overlay.setAttribute("aria-hidden","false");
+ document.body.style.overflow="hidden";
+ $("open-cart").setAttribute("aria-expanded","true");
+ $("close-cart").focus();
+}
+function closeCart(restoreFocus=true){
+ const overlay=$("cart-overlay");
+ overlay.hidden=true;
+ overlay.setAttribute("aria-hidden","true");
+ overlay.inert=true;
+ document.body.style.overflow="";
+ $("open-cart").setAttribute("aria-expanded","false");
+ if(restoreFocus)$("open-cart").focus();
+}
 function openClub(){
  $("club-error").hidden=true;
  const user=readClubUser();
@@ -251,4 +267,5 @@ async function restoreClub(){
  const user=readClubUser();if(!user||user.role!=="customer")return;
  setClubCard(user);if(canTryApi()){try{await showClubAccount();}catch(_){}}
 }
+closeCart(false);
 renderCategories();renderProducts();renderCart();loadRemoteMenu();restoreClub();
