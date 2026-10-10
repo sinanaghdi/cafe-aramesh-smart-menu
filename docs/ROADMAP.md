@@ -1,32 +1,70 @@
 # Café Aramesh Smart Menu — Roadmap
 
-A phase is complete only after acceptance criteria and tests pass, a report is provided, and the owner approves moving on.
+هدف، تبدیل منوی ثابت به تجربه‌ای فارسی، پویا و مشتری‌محور است. هر فاز پس از عبور از معیارهای پذیرش، تست‌های مربوط و تأیید صاحب پروژه بسته می‌شود. تا قبل از تأیید صریح، فاز بعدی شروع نمی‌شود.
 
-## Phase 0 — Foundation
-Plan and stack decisions, app scaffolds, Docker Compose, PostgreSQL schema/migration, Persian seed data, health checks, CI, contribution guidance, and architecture/API/AI documentation.
+## وضعیت پایه و پروتوتایپ
+- [x] مشخصات محصول و محدودیت‌های MVP ثبت شده‌اند.
+- [x] پروتوتایپ استاتیک فارسی در ریشه مخزن و مسیر GitHub Pages موجود است.
+- [x] فاز صفر زیرساخت Full-stack، مدل داده، seed، مستندات و CI پیاده‌سازی شده است.
+- [ ] پروتوتایپ استاتیک و اپ Full-stack هنوز یک مسیر UI واحد نیستند؛ انتقال/جایگزینی باید در یک PR کنترل‌شده و بعد از بررسی انجام شود.
 
-## Phase 1 — Customer menu and staff confirmation
-Real category/product API, QR table context, anonymous session, cart validation, short-lived verification code, state machine, staff-only operational queue, audit events, live updates. No payment.
+## فاز 0 — زیرساخت
+- [x] PLAN.md، معماری و تصمیم‌های فنی
+- [x] اسکلت FastAPI و React + Vite + TypeScript با RTL
+- [x] مدل‌های SQLAlchemy و مهاجرت اولیه Alembic
+- [x] seed تکرارپذیر با ۲۵ محصول فارسی، تگ‌ها، دسته‌ها و میزهای نمونه
+- [x] health/readiness، Docker Compose، CI، Dependabot و الگوهای مشارکت
+- [x] قرارداد AIProvider و feature flagهای خاموش برای قابلیت‌های آینده
+- [x] تست CI برای بالا آمدن Compose، مهاجرت و داده‌های seed
+- [x] PR جداگانه؛ بدون push مستقیم به main
 
-## Phase 2 — Study/work mode and club
-Merchant-configurable study rules, mock Wi-Fi adapter and timed vouchers after staff confirmation, consent-based optional mobile club, mock OTP provider, points ledger, tiers/rewards, account deletion.
+## فاز 1 — منوی مشتری، سبد درخواست و پنل کارکنان
+- [ ] اتصال منوی مشتری به API واقعی و حفظ QR میز
+- [ ] جلسه ناشناس مشتری و اعتبارسنجی سبد و قیمت در سرور
+- [ ] کد تأیید کوتاه، CSPRNG، انقضا، تک‌مصرفی و محدودیت تلاش
+- [ ] state machine و تست انتقال‌های مجاز/غیرمجاز
+- [ ] پنل کارکنان برای مشاهده و تأیید حضوری؛ بدون آمار فروش در UI یا API
+- [ ] ثبت audit log و SSE برای به‌روزرسانی صف
+- [ ] تست E2E جریان مشتری تا تأیید گارسون
 
-## Phase 3 — Smart combo and Persian NLP
-Testable combo scoring for BOOST_BESTSELLER and PUSH_SLOW_MOVER; deterministic Persian synonym/tag search; optional AI provider; clarification for ambiguous queries; anonymized unanswered-query signals; merchant approval before publication.
+## فاز 2 — استادی‌مود و باشگاه مشتریان
+- [ ] قوانین و ظرفیت استادی‌مود قابل‌ویرایش برای Merchant
+- [ ] ووچر زمان‌دار فقط پس از تأیید سفارش؛ رابط WifiAdapter و پیاده‌سازی Mock
+- [ ] SmsProvider با OTP آزمایشی
+- [ ] عضویت اختیاری، رضایت، حذف حساب، دفترکل امتیازها، سطح‌ها و پاداش‌ها
 
-## Phase 4 — Merchant management and insights
-Menu/combo management, merchant-only analytics based on persisted data, Jalali period selection, CSV export, rule-based fallback insights, AI suggestions with evidence/confidence and explicit approve/reject.
+## فاز 3 — NLP فارسی و کمبوی هوشمند
+- [ ] نرمال‌سازی فارسی/عربی، مترادف‌ها و امتیازدهی تگ‌ها
+- [ ] سؤال شفاف‌ساز برای جست‌وجوی مبهم و توضیح چرایی پیشنهاد
+- [ ] موتور مستقل کمبو با BOOST_BESTSELLER و PUSH_SLOW_MOVER
+- [ ] سیگنال‌های سرعت فروش، حاشیه سود، هم‌خریدی، ساعت و سبد فعلی
+- [ ] پیشنهاد کمبو صرفاً پس از تأیید Merchant قابل مشاهده باشد
+- [ ] لاگ ناشناس کوئری‌های بی‌پاسخ و تست مسیر fallback بدون AI
 
-## Phase 5 — Hardening and deployment readiness
-Security and authorization review, IDOR and abuse tests, accessible responsive UI, performance checks, Playwright critical-flow coverage, structured logs, deployment docs, and 70%+ domain logic coverage.
+## فاز 4 — مدیریت Merchant، تحلیل و AI Insights
+- [ ] مدیریت دسته‌ها، محصولات، کمبوها و قوانین
+- [ ] آمار روزانه/هفتگی/ماهانه بر اساس دادهٔ ثبت‌شده و زمان‌بندی شمسی
+- [ ] KPI، نمودار و خروجی CSV
+- [ ] پیشنهادهای مبتنی بر شواهد و میزان اطمینان
+- [ ] تأیید/رد صریح هر insight؛ تحلیل قاعده‌محور در نبود سرویس AI
 
-## Future extensions — architecture only
-These are not MVP features and must not be implemented within the phases above:
-- Online ordering, if later validated by the business.
-- A general AI agent.
-- An AI customer-support assistant.
+## فاز 5 — سخت‌سازی و آماده‌سازی انتشار
+- [ ] بررسی مجوزها، IDOR، امنیت endpointها و CORS
+- [ ] هش رمز، session/JWT، محدودیت نرخ و audit
+- [ ] تست‌های API و E2E، پوشش حداقل ۷۰٪ منطق دامنه
+- [ ] دسترس‌پذیری، RTL، عملکرد موبایل و بارگذاری زیر ۲ ثانیه روی شبکه محدود
+- [ ] راهنمای استقرار، مدیریت secrets، پشتیبان‌گیری و بازیابی
 
-Keep possible extension points and feature flags documented; do not ship placeholder controls implying these features work.
+## توسعه‌های آینده — فقط نقاط توسعه، نه پیاده‌سازی
+- سفارش آنلاین
+- ایجنت هوش مصنوعی
+- دستیار پشتیبانی هوش مصنوعی
 
-## Release gate
-The whole MVP is complete only when Compose starts and seeds the stack; customer-to-staff confirmation and eligible study vouchers work end to end; merchant analytics use persisted data; human approval is enforced; and CI/security/E2E checks are green.
+برای این قابلیت‌ها feature flag خاموش و نقاط توسعه معماری در نظر گرفته شده است؛ روشن کردن فلگ به معنای پیاده‌سازی قابلیت نیست.
+
+## قواعد پذیرش
+- داده نمونه هرگز به‌عنوان فروش واقعی معرفی نمی‌شود.
+- پرداخت، POS، حسابداری، انبار و CRM کامل خارج از محدوده‌اند.
+- تأیید حضوری گارسون، مرز اصلی نهایی شدن سفارش است.
+- هر تغییر تجاری پیشنهادی AI به تأیید Merchant نیاز دارد.
+- هر فاز باید تست‌شده و مستند باشد و منتظر تأیید صاحب پروژه بماند.

@@ -29,3 +29,9 @@ AI can suggest combos and business insights but cannot publish or apply them wit
 **Status:** Recommended, not changed. **Date:** 2026-10-10.
 
 After CI is stable, enable branch rules requiring pull requests and successful CI (and an approval where practical). Repository protection is not changed without owner confirmation.
+
+
+## ADR-007 — Preserve the current static prototype
+**Status:** Accepted. **Date:** 2026-10-10.
+
+The root HTML/CSS/JS prototype and its GitHub Pages workflow are preserved when adding the Full-stack scaffold. Docker's React app remains in `frontend/`; the root prototype stays presentation-only and must not imply that orders, authentication, or analytics are live. A future consolidation of the two UIs must be proposed and reviewed separately.

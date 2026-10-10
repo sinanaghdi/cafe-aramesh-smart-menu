@@ -4,10 +4,10 @@
 Replace a static cafe menu with a Persian-first, mobile-first menu that helps customers choose products while preserving deliberate in-person staff confirmation. This is not a POS, accounting system, inventory tool, or full CRM.
 
 ## Repository findings
-- The default branch is main.
-- The existing repository contained README.md, LICENSE, .gitignore, and the two product documents under docs/.
-- No executable frontend/backend, database models, migrations, Docker Compose stack, tests, or CI workflow existed at planning time.
-- Existing product boundaries and Persian RTL requirements are retained.
+- The initial inspected base commit was f8ecf6e; while development was in progress, main advanced with a static HTML/CSS/JavaScript prototype and a GitHub Pages workflow.
+- The root prototype files and Pages workflow are preserved as a presentation-only path; this branch adds a separate React/Vite app under frontend/ and does not overwrite the prototype.
+- The new full-stack foundation includes backend, database models, migration, seed data, Docker Compose, tests, CI, and documentation.
+- Both the root static prototype and the React scaffold remain demo/presentation interfaces; neither currently places real orders.
 
 ## Technical decisions
 - Backend: Python 3.12, FastAPI, Pydantic v2 / pydantic-settings, SQLAlchemy 2, Alembic, PostgreSQL, psycopg 3.

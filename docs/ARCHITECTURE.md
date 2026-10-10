@@ -47,3 +47,7 @@ Alembic owns schema evolution. The initial bootstrap migration creates the metad
 - WifiAdapter: mock voucher adapter first; router integration later.
 - SSE: add for the staff order queue after ordinary order APIs are correct.
 - Online ordering, AI agent, and AI support stay architecture-only until separately approved.
+
+
+## Existing root prototype
+The root-level `index.html`, `app.js`, and `styles.css` are a pre-existing static GitHub Pages prototype and intentionally remain unchanged. They do not connect to FastAPI, authenticate users, persist requests, or provide real analytics. The React/Vite scaffold under `frontend/` is what Docker serves on port 8080. Consolidating these into a single UI is a later, explicit UI migration task; do not silently remove the existing Pages demo.

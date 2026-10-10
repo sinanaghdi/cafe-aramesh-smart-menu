@@ -1,49 +1,68 @@
 # منوی هوشمند کافه آرامش | Café Aramesh Smart Menu
 
-منوی دیجیتال فارسی، راست‌چین و موبایل‌محور برای کمک به مشتری در انتخاب بهتر؛ با تأیید حضوری گارسون و پیشنهادهای کنترل‌شده توسط صاحب کافه.
+منوی دیجیتال فارسی، راست‌چین و موبایل‌محور برای کمک به انتخاب بهتر مشتری؛ با تأیید حضوری گارسون و پیشنهادهایی که فقط با تأیید صاحب کافه منتشر می‌شوند.
 
-> وضعیت فعلی: زیرساخت فاز صفر. هنوز سفارش واقعی، احراز هویت، جست‌وجوی NLP، کمبو، ووچر یا تحلیل فروش پیاده‌سازی نشده است. این صفحه یا داده‌های seed را داده واقعی کسب‌وکار تلقی نکنید.
+## وضعیت فعلی
 
-## اجرای محلی
+این مخزن فعلاً دو مسیر رابط دارد که عمداً از هم جدا نگه داشته شده‌اند:
+
+- **پروتوتایپ استاتیک موجود در ریشه** — فایل‌های `index.html`، `app.js` و `styles.css` برای نمایش و بررسی سریع UI و انتشار از طریق GitHub Pages. این نسخه نمایشی است و به بک‌اند وصل نیست؛ سبد، پنل‌ها یا اعداد نمایشی سفارش واقعی یا فروش واقعی نیستند.
+- **زیرساخت Full-stack جدید** — پوشه‌های `frontend/` و `backend/`، پایگاه داده، مهاجرت و Docker Compose. این بخش اکنون فاز صفر را تکمیل کرده است؛ منوی زنده، احراز هویت و جریان سفارش واقعی هنوز پیاده‌سازی نشده‌اند.
+
+پیشرفت بر اساس فازبندی در [PLAN.md](PLAN.md) ثبت شده است. هیچ قابلیتی خارج از این وضعیت را عملیاتی فرض نکنید.
+
+## اجرای زیرساخت Full-stack
 
 پیش‌نیاز: Docker و Docker Compose.
 
-1. در ریشه مخزن اجرا کنید: `docker compose up --build`
-2. رابط وب: http://localhost:8080
-3. سلامت API: http://localhost:8000/health
-4. آمادگی API و اتصال پایگاه داده: http://localhost:8000/ready
-5. مستندات API در محیط اجرا: http://localhost:8000/docs
+```bash
+docker compose up --build
+```
 
-Compose پایگاه داده PostgreSQL و Redis را اجرا می‌کند، مهاجرت Alembic را اعمال می‌کند و داده نمونه فارسی را به‌صورت تکرارپذیر seed می‌کند. اولین build برای دریافت وابستگی‌ها به اینترنت نیاز دارد.
+پس از بالا آمدن سرویس‌ها:
 
-### اجرای تست‌ها
+- رابط React داخل Docker: http://localhost:8080
+- سلامت API: http://localhost:8000/health
+- آمادگی API و اتصال PostgreSQL: http://localhost:8000/ready
+- مستندات API: http://localhost:8000/docs
 
-در پوشه backend، وابستگی‌های توسعه را نصب و تست‌ها را اجرا کنید:
+Compose سرویس‌های PostgreSQL و Redis را بالا می‌آورد، مهاجرت Alembic را اجرا می‌کند و ۲۵ محصول نمونه فارسی با تگ‌های ساختاریافته، ۵ دسته و ۸ میز آزمایشی را seed می‌کند. اولین build برای دریافت وابستگی‌ها به اینترنت نیاز دارد. مقادیر فایل `.env.example` فقط برای توسعه محلی هستند.
 
-    pip install -e ".[dev]"
-    ruff check .
-    mypy app
-    pytest
+## بررسی‌ها و تست‌ها
 
-در پوشه frontend:
+در پوشه `backend/`:
 
-    npm install
-    npm run lint
-    npm run typecheck
-    npm run build
-    npm run format:check
+```bash
+pip install -e ".[dev]"
+ruff check .
+mypy app
+pytest
+```
 
-## محدوده محصول
+در پوشه `frontend/`:
 
-- مشتری: منوی QR بدون ثبت‌نام اجباری؛ ثبت‌نام باشگاه اختیاری.
-- گارسون: مدیریت عملیاتی سفارش و تأیید حضوری؛ بدون دسترسی به تحلیل فروش.
-- صاحب کافه: مدیریت منو، کمبو و قوانین؛ تحلیل‌های داده‌محور و تأیید پیشنهادهای AI.
-- سفارش آنلاین پرداخت‌شده، POS، حسابداری، انبار و CRM کامل خارج از محدوده‌اند.
-- هوش مصنوعی هیچ تغییر تجاری را خودکار منتشر نمی‌کند؛ مسیر rule-based بدون سرویس خارجی باید کار کند.
+```bash
+npm install
+npm run lint
+npm run typecheck
+npm run build
+npm run format:check
+```
+
+CI همین بررسی‌ها را اجرا می‌کند و علاوه بر build، اجرای واقعی Compose، اتصال دیتابیس و وجود داده‌های seed را هم smoke-test می‌کند.
+
+## مرزهای محصول
+
+- **Customer:** مشاهده منو بدون ثبت‌نام اجباری؛ عضویت باشگاه در آینده اختیاری است.
+- **Staff:** فقط عملیات سفارش و تأیید حضوری؛ نباید به درآمد یا تحلیل فروش دسترسی داشته باشد.
+- **Merchant:** مدیریت منو و قوانین و مشاهده تحلیل مبتنی بر داده واقعی؛ تأیید انسانی برای پیشنهادهای AI الزامی است.
+- هیچ درگاه پرداخت، POS، انبار، حسابداری یا CRM کامل در MVP ساخته نمی‌شود.
+- درخواست ثبت‌شده معادل سفارش تأییدشده یا فروش نهایی نیست.
+- هوش مصنوعی اختیاری است؛ مسیر قاعده‌محور باید بدون سرویس خارجی کار کند.
 
 ## مستندات
 
-- [PLAN.md](PLAN.md) — برنامه و معیارهای تکمیل فازها
+- [PLAN.md](PLAN.md) — برنامه و معیارهای پذیرش فازها
 - [مشخصات محصول](docs/PRODUCT-SPEC.md)
 - [معماری](docs/ARCHITECTURE.md)
 - [قرارداد API و وضعیت پیاده‌سازی](docs/API.md)
@@ -52,22 +71,24 @@ Compose پایگاه داده PostgreSQL و Redis را اجرا می‌کند، 
 - [نقشه راه](docs/ROADMAP.md)
 - [راهنمای مشارکت](CONTRIBUTING.md)
 
-## هشدار پیکربندی
+## هشدار استقرار
 
-مقادیر موجود در Compose و فایل .env.example فقط برای توسعه محلی‌اند. پیش از استقرار، رمزهای قوی و مدیریت‌شده، HTTPS، محدودیت CORS مناسب، پشتیبان‌گیری امن و بررسی مجوزها ضروری‌اند.
+پیش از انتشار عملیاتی، کلیدها و رمزهای مدیریت‌شده، HTTPS، CORS محدود، احراز هویت و مجوزدهی سمت سرور، چرخش توکن‌های QR آزمایشی، پشتیبان‌گیری و سیاست نگهداری داده باید بررسی و پیکربندی شوند. هیچ رمز واقعی یا کلید API نباید در مخزن قرار بگیرد.
 
 ---
 
 ## English
 
-Café Aramesh Smart Menu is a Persian-first, RTL, mobile-first digital cafe menu. It is designed around customer choice, deliberate in-person staff confirmation, and merchant-controlled recommendations.
+Café Aramesh Smart Menu is a Persian-first, RTL, mobile-first menu designed around deliberate in-person staff confirmation and merchant-approved recommendations.
 
-Current status: Phase 0 foundation only. Live order placement, authentication, NLP, smart combos, Wi-Fi vouchers, and sales analytics are not implemented yet. Seed values are demonstration data, not real business records.
+The repository preserves the existing static GitHub Pages prototype at the root (`index.html`, `app.js`, `styles.css`) and adds a separate React/Vite + FastAPI stack under `frontend/` and `backend/`. The root prototype is presentation-only. The full-stack app is currently at Phase 0: migrations, seed data, health checks, and infrastructure are implemented, but live ordering, authentication, NLP, smart combos, Wi-Fi vouchers, and business analytics are not implemented yet.
 
-Run the stack with Docker Compose:
+Run the local stack:
 
-    docker compose up --build
+```bash
+docker compose up --build
+```
 
-Open the web app at http://localhost:8080, API health at http://localhost:8000/health, and API documentation at http://localhost:8000/docs.
+Open the React app at http://localhost:8080, API health at http://localhost:8000/health, readiness at http://localhost:8000/ready, and API docs at http://localhost:8000/docs. Seed values are development fixtures, not real business data.
 
-The application is not a POS, payment system, accounting package, inventory system, or full CRM. See PLAN.md and docs/ROADMAP.md for phase gates and scope.
+This is not a POS, payment system, accounting package, inventory system, or full CRM. See PLAN.md and docs/ROADMAP.md for the phase gates.
