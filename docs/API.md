@@ -52,3 +52,20 @@ Set environment variables to override credentials before local use. These are no
 - JWT refresh tokens are tracked by hashed JTI and rotated/revoked in PostgreSQL.
 - All user/order/item reads are scoped by cafe, and customer status reads are scoped by session digest.
 - These endpoints do not take payment and do not turn a request into an accounting sale.
+
+
+## Phase 2 — Study mode and loyalty
+
+| Method | Path | Access |
+|---|---|---|
+| GET/PUT | /v1/merchant/study-rules | Merchant only |
+| GET/PUT | /v1/merchant/loyalty-rules | Merchant only |
+| POST | /v1/club/otp/request | Consent + rate limit |
+| POST | /v1/club/otp/verify | Single-use OTP; sets HTTP-only club session |
+| GET | /v1/club/account | Club session |
+| POST | /v1/club/rewards/{id}/redeem | Club session + idempotency key |
+| POST | /v1/club/account/delete | Club session; anonymizes account identity |
+
+Study mode is requested in `POST /v1/orders` using `study_mode_requested` and `study_duration_minutes`. The reservation remains pending until the staff code check succeeds. Only then may the mock WifiAdapter issue a time-limited voucher. The customer order-status route exposes a voucher only for the same anonymous customer session that created the order.
+
+The club OTP is HMAC-hashed in storage, expires after five minutes, and locks after five wrong attempts. `debug_code` is returned only when `ENVIRONMENT` is not production so local testing does not require a real SMS provider. The Console SMS adapter never logs the OTP code. A production SMS gateway is not implemented yet.

@@ -9,7 +9,7 @@ from sqlalchemy.pool import StaticPool
 from app.db.base import Base
 from app.db.session import get_db
 from app.main import app
-from app.models import Cafe, CafeTable, Category, Product, ProductTag, User
+from app.models import Cafe, CafeTable, Category, LoyaltyRule, Product, ProductTag, Reward, StudyModeRule, User
 from app.services.auth.passwords import hash_password
 
 
@@ -56,6 +56,21 @@ def api_env() -> Generator[tuple[TestClient, sessionmaker, int, int], None, None
         db.flush()
         product2.product_id = product.id
         db.add_all([product2, staff, merchant])
+        db.add_all([
+            StudyModeRule(
+                cafe_id=cafe.id, enabled=True, minimum_order_amount=0,
+                allowed_durations_minutes=[120, 180], allowed_start_time="00:00",
+                allowed_end_time="23:59", max_concurrent_sessions=8,
+            ),
+            LoyaltyRule(
+                cafe_id=cafe.id, enabled=True, points_per_confirmed_order=10,
+                silver_threshold=30, gold_threshold=60, rewards_enabled=True,
+            ),
+            Reward(
+                cafe_id=cafe.id, name="قهوه رایگان آزمایشی", description="پاداش تست",
+                points_cost=5, reward_type="free_product", is_active=True,
+            ),
+        ])
         db.commit()
         product_id = product.id
         cafe_id = cafe.id

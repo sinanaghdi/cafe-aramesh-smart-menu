@@ -95,7 +95,7 @@ CI علاوه بر lint و build، بالا آمدن واقعی Compose، اجر
 
 Café Aramesh Smart Menu is a Persian-first, RTL, mobile-first cafe menu built around deliberate in-person staff confirmation.
 
-The existing root HTML/CSS/JavaScript prototype remains presentation-only for GitHub Pages. The full-stack app lives under `frontend/` and `backend/`. Phase 1 implements the database-backed menu, server-priced request cart, short-lived HMAC-backed confirmation code, staff login, operations-only order queue, SSE snapshots, and tested status transitions. Study mode, loyalty, Persian NLP, smart combos, and merchant analytics remain later phases.
+The existing root HTML/CSS/JavaScript prototype remains presentation-only for GitHub Pages. The full-stack app lives under `frontend/` and `backend/`. Phase 1 implements the database-backed menu, server-priced request cart, short-lived HMAC-backed confirmation code, staff login, operations-only order queue, SSE snapshots, and tested status transitions. Study mode and the optional loyalty club are implemented on the Phase 2 branch. Persian NLP, smart combos, and merchant analytics remain later phases.
 
 Start locally with `docker compose up --build`. Visit the React app at http://localhost:8080, API health at http://localhost:8000/health, readiness at http://localhost:8000/ready, and API docs at http://localhost:8000/docs.
 
@@ -103,4 +103,4 @@ Development-only login:
 - Staff: `staff@aramesh.local` / `StaffDemo!2026`
 - Merchant: `merchant@aramesh.local` / `MerchantDemo!2026`
 
-Do not use those credentials outside local development. The app is not a payment system, POS, accounting package, inventory system, or full CRM.
+Do not use those credentials outside local development. The app is not a payment system, POS, accounting package, inventory system, or full CRM. Wi-Fi is currently a mock voucher and does not grant real router access; the console SMS adapter is development-only.

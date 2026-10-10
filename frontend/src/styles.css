@@ -1255,3 +1255,50 @@ a:focus-visible {
     transition-duration: 0.01ms !important;
   }
 }
+
+
+.study-option { margin-block: 17px; padding: 15px; border: 1px solid var(--line); background: #faf6ef; }
+.study-toggle { display: flex; align-items: flex-start; gap: 10px; font-size: 12px; line-height: 1.8; cursor: pointer; }
+.study-toggle input, .consent-label input, .duration-options input { accent-color: var(--accent); margin-top: 5px; flex-shrink: 0; }
+.study-toggle strong, .study-toggle small { display: block; }
+.study-toggle small { margin-top: 3px; color: var(--muted); font-size: 10px; }
+.study-option .field-label { margin-top: 14px; margin-bottom: 0; }
+.field-label select { display: block; width: 100%; margin-top: 8px; padding: 12px; border: 1px solid var(--line); background: #fcfaf6; color: var(--ink); }
+.study-receipt { padding: 15px; margin-top: 18px; border: 1px solid #d9c8b3; background: #f8f2e9; text-align: right; }
+.study-receipt > strong { font-size: 13px; }
+.study-receipt p { color: var(--muted); font-size: 11px; line-height: 1.9; }
+.wifi-voucher-code { display: flex; flex-direction: column; align-items: center; gap: 6px; margin-block: 14px; padding: 15px; background: #fffdf9; border: 1px dashed #bca488; }
+.wifi-voucher-code span { color: var(--muted); font-size: 10px; }
+.wifi-voucher-code strong { direction: ltr; font-size: 24px; letter-spacing: 2px; color: var(--green); }
+.study-countdown { font-variant-numeric: tabular-nums; }
+.merchant-workspace, .club-workspace { padding-bottom: 75px; }
+.merchant-settings-grid, .club-auth-grid, .club-account-grid { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 16px; }
+.settings-card { padding: 25px; border: 1px solid var(--line); background: var(--surface); box-shadow: 0 10px 32px rgba(64, 48, 31, 0.035); }
+.settings-card h2 { margin: 0 0 20px; font-size: 22px; font-weight: 500; }
+.settings-card .field-label { margin-top: 16px; }
+.settings-card .field-label input, .settings-card .field-label select { background: #fffdf9; }
+.settings-help { color: var(--muted); font-size: 11px; line-height: 2; }
+.duration-options { display: flex; flex-wrap: wrap; gap: 13px; padding: 14px 0; border: 0; margin: 0; }
+.duration-options legend { padding-top: 12px; color: var(--muted); font-size: 11px; }
+.duration-options label { display: inline-flex; align-items: center; gap: 5px; color: var(--ink); font-size: 11px; }
+.settings-two-column { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 12px; }
+.consent-label { display: flex; align-items: flex-start; gap: 9px; margin-block: 19px; color: var(--muted); font-size: 11px; line-height: 2; cursor: pointer; }
+.dev-otp { display: flex; flex-direction: column; align-items: center; gap: 7px; margin-top: 18px; padding: 14px; background: #f5eee2; border: 1px dashed #ccb79c; }
+.dev-otp span, .dev-otp small { color: var(--muted); font-size: 10px; }
+.dev-otp strong { font-size: 25px; letter-spacing: 4px; direction: ltr; }
+.club-points { display: flex; align-items: baseline; gap: 8px; margin-block: 16px; color: var(--accent); }
+.club-points strong { font-size: 42px; font-weight: 600; }
+.club-points span { font-size: 12px; }
+.club-tier { margin-bottom: 20px; color: var(--muted); font-size: 12px; }
+.reward-row, .history-row { display: flex; align-items: center; justify-content: space-between; gap: 16px; padding-block: 14px; border-bottom: 1px solid #eee7de; }
+.reward-row > div, .history-row > span { display: flex; flex-direction: column; gap: 5px; }
+.reward-row strong, .history-row span { font-size: 12px; }
+.reward-row small, .history-row small { color: var(--muted); font-size: 10px; }
+.reward-row span { color: var(--accent); font-size: 10px; }
+.history-row strong { font-size: 12px; white-space: nowrap; }
+.points-positive { color: var(--green); }
+.points-negative { color: var(--red); }
+@media (max-width: 760px) {
+  .merchant-settings-grid, .club-auth-grid, .club-account-grid { grid-template-columns: 1fr; }
+  .settings-card { padding: 20px 16px; }
+}
