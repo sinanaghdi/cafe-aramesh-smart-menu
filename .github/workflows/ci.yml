@@ -45,10 +45,7 @@ jobs:
       - run: npm run lint
       - run: npm run typecheck
       - run: npm run build
-      - name: Diagnose Prettier output
-        run: |
-          npx prettier src/App.tsx | diff -u src/App.tsx - || true
-          npx prettier src/styles.css | diff -u src/styles.css - || true
+      - run: npm run format:check
 
   docker:
     name: Docker Compose build validation
