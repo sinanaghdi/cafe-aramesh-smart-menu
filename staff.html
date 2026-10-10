@@ -1,0 +1,34 @@
+<!doctype html>
+<html lang="fa" dir="rtl">
+<head>
+<meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><meta name="theme-color" content="#f6f2ea">
+<title>پنل کارکنان | کافه آرامش</title>
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin><link href="https://fonts.googleapis.com/css2?family=Vazirmatn:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="./role.css">
+</head>
+<body>
+<header class="role-top"><a class="role-brand" href="./index.html"><span class="role-mark">آ</span><span><strong>کافه آرامش</strong><small>پنل عملیاتی کارکنان</small></span></a><div class="role-top-actions"><a href="./index.html">بازگشت به منوی کافه</a><button id="logout" class="role-quiet" hidden>خروج</button></div></header>
+<main class="role-wrap">
+<section id="login-view" class="role-card role-login">
+<div class="role-eyebrow">ورود کارکنان</div><h1>درخواست‌ها را با آرامش مدیریت کن.</h1><p>برای مشاهده صف درخواست‌ها، اطلاعات حساب کاربری کارکنان را وارد کنید.</p>
+<form id="login-form" class="role-main">
+<div class="role-field"><label for="email">ایمیل</label><input id="email" type="email" autocomplete="username" required dir="ltr" placeholder="waiter@aramesh.local"></div>
+<div class="role-field"><label for="password">گذرواژه</label><input id="password" type="password" autocomplete="current-password" required dir="ltr"></div>
+<button class="role-button" type="submit">ورود به پنل</button><div id="login-error" class="role-error" hidden></div>
+</form><p class="role-muted">حساب نمایشی فقط برای اجرای محلی است؛ در محیط عملیاتی حساب جداگانه بسازید.</p>
+</section>
+<section id="staff-view" hidden>
+<div class="role-page-heading"><div><div class="role-eyebrow">عملیات روزانه</div><h1>پنل کارکنان</h1><p id="staff-greeting">صف درخواست‌ها و وضعیت آماده‌سازی</p></div><button id="refresh-orders" class="role-quiet">به‌روزرسانی ↻</button></div>
+<div class="role-layout">
+<aside class="role-side"><h2>صف درخواست‌ها</h2><nav class="role-nav" aria-label="فهرست درخواست‌ها">
+<button type="button" class="active" data-view="pending">در انتظار تأیید</button>
+<button type="button" data-view="active">در حال انجام</button>
+<button type="button" data-view="history">سابقه درخواست‌ها</button>
+</nav><p class="role-muted">صف هر ۱۵ ثانیه به‌روزرسانی می‌شود.</p></aside>
+<section class="role-main"><div class="role-card"><h2 id="queue-title">درخواست‌های در انتظار تأیید</h2><p class="role-muted" id="queue-description">کد صحیح در این صفحه نمایش داده نمی‌شود؛ کد را از خود مشتری بپرسید.</p><div id="order-list" aria-live="polite"><div class="role-empty">در حال بارگذاری…</div></div><div id="queue-error" class="role-error" hidden></div></div></section>
+</div>
+</section>
+</main>
+<footer class="role-footer">کافه آرامش · کد تأیید فقط نزد مشتری است و باید حضوری دریافت شود.</footer>
+<script src="./config.js"></script><script src="./role-client.js"></script><script src="./staff.js"></script>
+</body></html>
