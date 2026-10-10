@@ -54,7 +54,10 @@ export default function App() {
             اینجا نقطه شروع منوی هوشمند کافه آرامش است؛ منویی فارسی، ساده و
             مشتری‌محور که برای انتخاب بهتر طراحی می‌شود.
           </p>
-          <div className={`service-status service-status--${apiState}`} role="status">
+          <div
+            className={`service-status service-status--${apiState}`}
+            role="status"
+          >
             <span className="status-dot" aria-hidden="true" />
             {statusText}
           </div>
